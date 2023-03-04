@@ -1,0 +1,110 @@
+{
+    "common": {
+        "name": "aduro-stove",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Aduro Hybrid Stove",
+        "titleLang": {
+            "en": "Aduro Hybrid Stove",
+            "de": "Aduro Hybridkocher",
+            "ru": "Гибридная печь Aduro",
+            "pt": "Fogão Híbrido Aduro",
+            "nl": "Aduro hybride fornuis",
+            "fr": "Poêle Hybride Aduro",
+            "it": "Stufa ibrida Aduro",
+            "es": "Estufa Híbrida Aduro",
+            "pl": "Kuchenka hybrydowa Aduro",
+            "zh-cn": "Aduro 混合炉"
+        },
+        "desc": {
+            "en": "Connect your Aduro Hybrid Stove to ioBroker and request data from adurocloud.com",
+            "de": "Verbinden Sie Ihren Aduro Hybrid Stove mit ioBroker und fordern Sie Daten von adurocloud.com an",
+            "ru": "Подключите гибридную плиту Aduro к ioBroker и запросите данные с adurocloud.com.",
+            "pt": "Conecte seu Aduro Hybrid Stove ao ioBroker e solicite dados de adurocloud.com",
+            "nl": "Verbind uw Aduro Hybrid Stove met ioBroker en vraag gegevens op bij adurocloud.com",
+            "fr": "Connectez votre poêle hybride Aduro à ioBroker et demandez des données à adurocloud.com",
+            "it": "Connetti la tua Aduro Hybrid Stove a ioBroker e richiedi i dati da adurocloud.com",
+            "es": "Conecte su estufa híbrida Aduro a ioBroker y solicite datos de adurocloud.com",
+            "pl": "Podłącz swoją kuchenkę hybrydową Aduro do ioBroker i poproś o dane z adurocloud.com",
+            "zh-cn": "将您的 Aduro 混合炉连接到 ioBroker 并从 adurocloud.com 请求数据"
+        },
+        "authors": [
+            "Maximilian Steinert <maimilian.steinert@me.com>"
+        ],
+        "keywords": [
+            "aduro",
+            "hybrid",
+            "stove",
+            "h1",
+            "h2"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "aduro-stove.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/photomax2202/ioBroker.aduro-stove/main/admin/aduro-stove.png",
+        "readme": "https://github.com/photomax2202/ioBroker.aduro-stove/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "household",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "materialize"
+        },
+        "eraseOnUpload": true,
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.0.0"
+            }
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}
