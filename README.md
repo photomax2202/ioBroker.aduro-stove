@@ -104,6 +104,11 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
 -->
 
 ### **WORK IN PROGRESS**
+
+* (Maximilian Steinert)
+
+### 0.0.1 (2023-03-05)
+
 * (Maximilian Steinert) initial release
 
 ## License

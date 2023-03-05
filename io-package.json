@@ -13,7 +13,8 @@
                 "it": "Versione iniziale",
                 "es": "Versión inicial",
                 "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
+                "zh-cn": "首次出版",
+                "uk": "початковий випуск"
             }
         },
         "title": "Aduro Hybrid Stove",
@@ -27,7 +28,8 @@
             "it": "Stufa ibrida Aduro",
             "es": "Estufa Híbrida Aduro",
             "pl": "Kuchenka hybrydowa Aduro",
-            "zh-cn": "Aduro 混合炉"
+            "zh-cn": "Aduro 混合炉",
+            "uk": "Гібридна піч Aduro"
         },
         "desc": {
             "en": "Connect your Aduro Hybrid Stove to ioBroker and request data from adurocloud.com",
@@ -39,7 +41,8 @@
             "it": "Connetti la tua Aduro Hybrid Stove a ioBroker e richiedi i dati da adurocloud.com",
             "es": "Conecte su estufa híbrida Aduro a ioBroker y solicite datos de adurocloud.com",
             "pl": "Podłącz swoją kuchenkę hybrydową Aduro do ioBroker i poproś o dane z adurocloud.com",
-            "zh-cn": "将您的 Aduro 混合炉连接到 ioBroker 并从 adurocloud.com 请求数据"
+            "zh-cn": "将您的 Aduro 混合炉连接到 ioBroker 并从 adurocloud.com 请求数据",
+            "uk": "Підключіть свій Aduro Hybrid Stove до ioBroker і надішліть запит на дані з adurocloud.com"
         },
         "authors": [
             "Maximilian Steinert <maimilian.steinert@me.com>"
@@ -75,13 +78,16 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=5.0.0"
+                "admin": ">=5.1.28"
             }
         ]
     },
     "native": {
         "option1": true,
-        "option2": "42"
+        "option2": "42",
+        "loginName": "my@mail.com",
+        "loginPasskey": "",
+        "stoveSerial": "00000"
     },
     "objects": [],
     "instanceObjects": [

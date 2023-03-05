@@ -1,0 +1,9 @@
+{
+    "Options": "Параметры",
+    "loginMail": "Электронная почта",
+    "Type in your adurocloud login Email": "Введите адрес электронной почты для входа в adurocloud.",
+    "loginPasskey": "Пароль",
+    "Type in your adurocloud login password.": "Введите пароль для входа в adurocloud.",
+    "stoveSerial": "Серийный номер.",
+    "Type in the SerialNo od your Stove": "Введите серийный номер вашей плиты."
+}
