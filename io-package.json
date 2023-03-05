@@ -65,7 +65,7 @@
         "connectionType": "cloud",
         "dataSource": "poll",
         "adminUI": {
-            "config": "materialize"
+            "config": "json"
         },
         "eraseOnUpload": true,
         "dependencies": [
