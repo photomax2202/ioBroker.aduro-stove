@@ -83,11 +83,9 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42",
         "loginName": "my@mail.com",
         "loginPasskey": "",
-        "stoveSerial": "00000"
+        "stoveSerial": "50111"
     },
     "objects": [],
     "instanceObjects": [
@@ -109,6 +107,38 @@
                 "read": true,
                 "write": false,
                 "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "accountInfo",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Account Information",
+                    "de": "Informationen Ã1⁄4ber das Konto",
+                    "ru": "Информация о аккаунте",
+                    "pt": "InformaÃ§Ã£o da conta",
+                    "nl": "Account Information",
+                    "fr": "Information sur le compte",
+                    "it": "Informazioni sull'account",
+                    "es": "Información de cuentas",
+                    "pl": "Informacja",
+                    "uk": "Інформація про обліковий запис",
+                    "zh-cn": "信息库"
+                  }
+            },
+            "native": {}
+        },
+        {
+            "_id": "accountInfo.token",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Bearer Token",
+                "type": "string",
+                "read": true,
+                "write": false
             },
             "native": {}
         }

@@ -25,7 +25,7 @@
                 "stoveSerial": {
                     "type": "number",
                     "min": 1,
-                    "max": 10,
+                    "max": 999999999,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,

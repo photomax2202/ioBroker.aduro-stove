@@ -7,6 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
+const { Http2ServerRequest } = require('http2');
 const axios = require('axios').default;
 
 // Load your modules here, e.g.:
@@ -22,6 +23,9 @@ class AduroStove extends utils.Adapter {
             ...options,
             name: 'aduro-stove',
         });
+
+        this.httpsClient = null;
+
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         // this.on('objectChange', this.onObjectChange.bind(this));
@@ -29,20 +33,35 @@ class AduroStove extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
+
     /**
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
         // Initialize your adapter here
-        
+
+        this.httpsClient = axios.create({
+            baseURL: `https://adurocloud.com/api`,
+            timeout: 4000,
+            responseType: 'json',
+            responseEncoding: 'utf8'
+        });
+
+        try{
+            const clientAuthResponse = await this.httpsClient.post('/auth/login', {email: this.config.loginName , password: this.config.loginPasskey});
+            this.log.debug(`clientAuthResponse ${JSON.stringify(clientAuthResponse.status)}: ${JSON.stringify(clientAuthResponse.data)}`);
+
+            if (clientAuthResponse.status === 200) {
+                const clientAuth = clientAuthResponse.data;
+
+                await this.setStateAsync('accountInfo.token', {val: clientAuth.token, ack: true});
+            }
+        } catch (err) {
+            this.log.error(err);
+        }
 
         // Reset the connection indicator during startup
         // this.setState('info.connection', false, true);
-
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        // this.log.info('config option1: ' + this.config.option1);
-        // this.log.info('config option2: ' + this.config.option2);
 
         /*
         For every state in the system there has to be also an object of type state
