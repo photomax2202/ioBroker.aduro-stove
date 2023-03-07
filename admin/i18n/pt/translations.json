@@ -5,5 +5,6 @@
     "loginPasskey": "Senha",
     "Type in your adurocloud login password.": "Digite sua senha de login adurocloud.",
     "stoveSerial": "Número de série.",
-    "Type in the SerialNo od your Stove": "Digite o SerialNo do seu Fogão"
+    "Type in the SerialNo od your Stove": "Digite o SerialNo do seu Fogão",
+    "Set the Interval you will request your stove": "Defina o intervalo que você solicitará seu fogão"
 }

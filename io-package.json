@@ -85,7 +85,7 @@
     "native": {
         "loginName": "my@mail.com",
         "loginPasskey": "",
-        "stoveSerial": "50111"
+        "stoveSerial": "120"
     },
     "objects": [],
     "instanceObjects": [
@@ -126,7 +126,7 @@
                     "pl": "Informacja",
                     "uk": "Інформація про обліковий запис",
                     "zh-cn": "信息库"
-                  }
+                }
             },
             "native": {}
         },

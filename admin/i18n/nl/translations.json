@@ -5,5 +5,6 @@
     "loginPasskey": "Wachtwoord",
     "Type in your adurocloud login password.": "Voer uw adurocloud-inlogwachtwoord in.",
     "stoveSerial": "Serienummer.",
-    "Type in the SerialNo od your Stove": "Voer het serienummer van uw fornuis in"
+    "Type in the SerialNo od your Stove": "Voer het serienummer van uw fornuis in",
+    "Set the Interval you will request your stove": "Stel het Interval in dat u uw kachel wilt aanvragen"
 }

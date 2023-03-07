@@ -56,8 +56,89 @@ class AduroStove extends utils.Adapter {
 
                 await this.setStateAsync('accountInfo.token', {val: clientAuth.token, ack: true});
             }
+
+            const tokenState = await this.getStateAsync('accountInfo.token');
+            const value = tokenState ? tokenState.val : undefined;
+            //this.log.debug(value);
+
+            const clientDeviceResponse = await this.httpsClient.get('/groups/devices', {headers: {'Authorization': `Bearer ${value}`}});
+            this.log.debug(`clientDeviceResponse ${JSON.stringify(clientDeviceResponse.status)}: ${JSON.stringify(clientDeviceResponse.data)}`);
+
+            if (clientDeviceResponse.status === 200) {
+                const  clientDevice = clientDeviceResponse.data;
+
+                for (let deviceIndex = 0; deviceIndex < clientDevice.devices.length; deviceIndex++) {
+                    const clientSerialResponse = await this.httpsClient.get(`stove/${clientDevice.devices[deviceIndex].serial}`, {headers: {'Authorization': `Bearer ${value}`}});
+                    this.log.debug(`clientSerialResponse ${JSON.stringify(clientSerialResponse.status)}: ${JSON.stringify(clientSerialResponse.data)}`);
+
+                    //this.log.debug(JSON.stringify(clientDevice.devices[deviceIndex]));
+                    const deviceName = `Stove_${clientDevice.devices[deviceIndex].id}`;
+                    const deviceChannel = 'Data';
+                    await this.createDeviceAsync(deviceName);
+                    await this.createChannelAsync(deviceName,deviceChannel,);
+                    let stateName = 'Model';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].model, ack: true});
+                    stateName = 'Serial';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].serial, ack: true});
+                    stateName = 'Runtime';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].runtime, ack: true});
+                    stateName = 'Version';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: null, ack: true});
+                    stateName = 'lastSeen';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: this.formatDate(String(new Date (Number(clientDevice.devices[deviceIndex].lastSeen))), 'DD.MM.YYYY hh:mm'), ack: true});
+                    stateName = 'z00';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'number');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z00, ack: true});
+                    stateName = 'z02';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'number');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z02, ack: true});
+                    stateName = 'z03';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'number');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z03, ack: true});
+                    stateName = 'z04';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'number');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z04, ack: true});
+                    stateName = 'z05';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'number');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z05, ack: true});
+                    stateName = 'z10';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z10, ack: true});
+                    stateName = 'z110';
+                    await this.createStateAsync(deviceName,deviceChannel,stateName,'text');
+                    await this.setStateAsync(`${deviceName}.${deviceChannel}.${stateName}`, {val: clientDevice.devices[deviceIndex].z110, ack: true});
+
+                    if (clientSerialResponse.status === 200) {
+                        const  clientSerial = clientSerialResponse.data;
+                        stateName = 'Runtime';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.runtime, ack: true});
+                        stateName = 'Version';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.ver, ack: true});
+                        stateName = 'z00';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z00, ack: true});
+                        stateName = 'z02';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z02, ack: true});
+                        stateName = 'z03';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z03, ack: true});
+                        stateName = 'z04';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z04, ack: true});
+                        stateName = 'z05';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z05, ack: true});
+                        stateName = 'z10';
+                        await this.setStateChangedAsync(`${deviceName}.${deviceChannel}.${stateName}`,{val: clientSerial.z10, ack: true});
+                    }
+                }
+                await this.setStateAsync('info.connection', {val: true, ack: true});
+            }
+
         } catch (err) {
             this.log.error(err);
+            await this.setStateAsync('info.connection', {val: false, ack: true});
         }
 
         // Reset the connection indicator during startup

@@ -5,5 +5,6 @@
     "loginPasskey": "Passwort",
     "Type in your adurocloud login password.": "Geben Sie Ihr Adurocloud-Login-Passwort ein.",
     "stoveSerial": "Seriennummer.",
-    "Type in the SerialNo od your Stove": "Geben Sie die Seriennummer Ihres Ofens ein"
+    "Type in the SerialNo od your Stove": "Geben Sie die Seriennummer Ihres Ofens ein",
+    "Set the Interval you will request your stove": "Stellen Sie das Intervall ein, in dem Sie Ihren Ofen anfordern"
 }

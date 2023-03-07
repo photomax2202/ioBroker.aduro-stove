@@ -24,13 +24,13 @@
                 },
                 "stoveSerial": {
                     "type": "number",
-                    "min": 1,
-                    "max": 999999999,
+                    "min": 30,
+                    "max": 3600,
                     "sm": 12,
                     "md": 6,
                     "lg": 6,
-                    "label": "SerialNo.",
-                    "help": "Type in the SerialNo od your Stove"
+                    "label": "RequestInterval",
+                    "help": "Set the Interval you will request your stove"
                 }
             }
         }
