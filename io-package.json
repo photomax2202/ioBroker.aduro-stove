@@ -85,7 +85,7 @@
     "native": {
         "loginName": "my@mail.com",
         "loginPasskey": "",
-        "stoveSerial": "120"
+        "requestInterval": "300"
     },
     "objects": [],
     "instanceObjects": [
@@ -138,7 +138,19 @@
                 "name": "Bearer Token",
                 "type": "string",
                 "read": true,
-                "write": false
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "accountInfo.deviceList",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "deviceList",
+                "type": "string",
+                "read": true,
+                "write": true
             },
             "native": {}
         }

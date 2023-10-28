@@ -22,7 +22,7 @@
                     "label": "Password",
                     "help": "Type in your adurocloud login password."
                 },
-                "stoveSerial": {
+                "requestInterval": {
                     "type": "number",
                     "min": 30,
                     "max": 3600,

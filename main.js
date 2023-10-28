@@ -24,7 +24,18 @@ class AduroStove extends utils.Adapter {
             name: 'aduro-stove',
         });
 
-        this.httpsClient = null;
+        this.baseUrl = `https://adurocloud.com/api/`;
+        this.authURL = 'auth/login';
+        this.groupURL = 'groups/devices';
+        this.stoveURL = 'stove/';
+        this.userAgent = "ioBroker v";
+
+        this.httpsClient = axios.create({
+            baseURL: `https://adurocloud.com/api/`,
+            timeout: 10000,
+            responseType: 'json',
+            responseEncoding: 'utf8'
+        });
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -39,29 +50,42 @@ class AduroStove extends utils.Adapter {
      */
     async onReady() {
         // Initialize your adapter here
-
-        this.httpsClient = axios.create({
-            baseURL: `https://adurocloud.com/api`,
-            timeout: 4000,
-            responseType: 'json',
-            responseEncoding: 'utf8'
-        });
-
+        this.setState('info.connection', false, true);
+        if (!this.config.loginName) {
+            this.log.error("Please enter username");
+            return;
+          }
+          if (!this.config.loginPasskey) {
+            this.log.error("Please enter passkey");
+            return;
+          }
+          if (!this.config.requestInterval) {
+            this.log.error("Please enter username");
+            return;
+          }
         try{
-            const clientAuthResponse = await this.httpsClient.post('/auth/login', {email: this.config.loginName , password: this.config.loginPasskey});
-            this.log.debug(`clientAuthResponse ${JSON.stringify(clientAuthResponse.status)}: ${JSON.stringify(clientAuthResponse.data)}`);
-
-            if (clientAuthResponse.status === 200) {
-                const clientAuth = clientAuthResponse.data;
-
-                await this.setStateAsync('accountInfo.token', {val: clientAuth.token, ack: true});
-            }
+            this.log.info(`Adapter starten mit Benutzername ${this.config.loginName}`);
+            /*
+            const clientAuthResponse = this.httpsClient.post(this.authURL, {email: this.config.loginName , password: this.config.loginPasskey});
+        this.log.debug(`clientAuthResponse ${JSON.stringify(clientAuthResponse.status)}: ${JSON.stringify(clientAuthResponse.data)}`);
+        if (clientAuthResponse.status === 200) {
+            const clientAuth = clientAuthResponse.data;
+            this.log.info(`clientAuthResponse ${JSON.stringify(clientAuth.token)}`);
+            this.setStateAsync('accountInfo.token', {val: clientAuth.token, ack: true});
+            this.setState('info.connection', true, true);
+        } else {
+            this.setState('info.connection', false, true);
+        }
+            */
+            this.getAuthentication;
 
             const tokenState = await this.getStateAsync('accountInfo.token');
             const value = tokenState ? tokenState.val : undefined;
-            //this.log.debug(value);
+            this.log.debug(value);
 
-            const clientDeviceResponse = await this.httpsClient.get('/groups/devices', {headers: {'Authorization': `Bearer ${value}`}});
+            //this.getDevicesList;
+
+            const clientDeviceResponse = await this.httpsClient.get('groups/devices', {headers: {'Authorization': `Bearer ${value}`}});
             this.log.debug(`clientDeviceResponse ${JSON.stringify(clientDeviceResponse.status)}: ${JSON.stringify(clientDeviceResponse.data)}`);
 
             if (clientDeviceResponse.status === 200) {
@@ -71,9 +95,9 @@ class AduroStove extends utils.Adapter {
                     const clientSerialResponse = await this.httpsClient.get(`stove/${clientDevice.devices[deviceIndex].serial}`, {headers: {'Authorization': `Bearer ${value}`}});
                     this.log.debug(`clientSerialResponse ${JSON.stringify(clientSerialResponse.status)}: ${JSON.stringify(clientSerialResponse.data)}`);
 
-                    //this.log.debug(JSON.stringify(clientDevice.devices[deviceIndex]));
+                    this.log.debug(JSON.stringify(clientDevice.devices[deviceIndex]));
                     const deviceName = `Stove_${clientDevice.devices[deviceIndex].id}`;
-                    const deviceChannel = 'Data';
+                    const deviceChannel = 'Data';//
                     await this.createDeviceAsync(deviceName);
                     await this.createChannelAsync(deviceName,deviceChannel,);
                     let stateName = 'Model';
@@ -259,6 +283,75 @@ class AduroStove extends utils.Adapter {
     //         }
     //     }
     // }
+
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+
+    getAuthentication() {
+        return new Promise(async (resolve, reject) => {
+            await axios({
+              method: "get",
+              url: this.baseUrl + this.authURL,
+              headers: {
+                "content-type": "application/json",
+                accept: "*/*",
+                email: this.config.loginName ,
+                password: this.config.loginPasskey,
+                "accept-language": "de-DE,de;q=0.9",
+                "user-agent": this.userAgent,
+                "content-version": "1",
+              },
+            })
+              .then((res) => {
+                if (res.status == 200) {
+                  //this.setIsCarMoving(vin, false);
+                  const clientAuth = res.data;
+                  this.log.info(`clientAuthResponse ${JSON.stringify(clientAuth.token)}`);
+                  this.setStateAsync('accountInfo.token', {val: clientAuth.token, ack: true});
+                  this.setState('info.connection', true, true);
+                } else if (res.status == 204) {
+                  //this.setIsCarMoving(vin, true);
+                  this.setState('info.connection', false, true);
+                }
+                this.log.debug(JSON.stringify(res.data));
+                //this.extractKeys(this, vin + ".parkingposition", res.data.data);
+              })
+              .catch((error) => {
+                this.log.debug(error);
+                //   error.response && this.log.error(JSON.stringify(error.response.data));
+              }); 
+    }}
+
+    async getDevicesList() {
+        const tokenState = this.getStateAsync('accountInfo.token');
+        const value = tokenState ? tokenState.val : undefined;
+        const clientDeviceResponse = this.httpsClient.get(this.groupURL, {headers: {'Authorization': `Bearer ${value}`}});
+        this.log.debug(`clientDeviceResponse ${JSON.stringify(clientDeviceResponse.status)}: ${JSON.stringify(clientDeviceResponse.data)}`);
+        if (clientDeviceResponse.status === 200) {
+            const deviceList = clientDeviceResponse.data;
+            this.log.info(`clientDeviceResponse ${JSON.stringify(deviceList)}`);
+            await this.setObjectNotExistsAsync('accountInfo.deviceList', {
+                type: 'state',
+                common: {
+                    name: 'Devicelist',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            });
+            await this.setStateAsync('accountInfo.deviceList', {val: deviceList, ack: true});
+            this.setState('info.connection', true, true);
+        } else {
+            this.setState('info.connection', false, true);
+        }
+    }
 
 }
 
