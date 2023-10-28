@@ -20,7 +20,7 @@
         "title": "Aduro Hybrid Stove",
         "titleLang": {
             "en": "Aduro Hybrid Stove",
-            "de": "Aduro Hybridkocher",
+            "de": "Aduro Hybrid Kamin",
             "ru": "Гибридная печь Aduro",
             "pt": "Fogão Híbrido Aduro",
             "nl": "Aduro hybride fornuis",
@@ -33,7 +33,7 @@
         },
         "desc": {
             "en": "Connect your Aduro Hybrid Stove to ioBroker and request data from adurocloud.com",
-            "de": "Verbinden Sie Ihren Aduro Hybrid Stove mit ioBroker und fordern Sie Daten von adurocloud.com an",
+            "de": "Verbinden Sie Ihren Aduro Hybrid Kamin mit ioBroker und fordern Sie Daten von adurocloud.com an",
             "ru": "Подключите гибридную плиту Aduro к ioBroker и запросите данные с adurocloud.com.",
             "pt": "Conecte seu Aduro Hybrid Stove ao ioBroker e solicite dados de adurocloud.com",
             "nl": "Verbind uw Aduro Hybrid Stove met ioBroker en vraag gegevens op bij adurocloud.com",
